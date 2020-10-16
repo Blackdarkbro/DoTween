@@ -9,7 +9,9 @@ public class PointRotation : MonoBehaviour
     void Start()
     {
         var s = DOTween.Sequence();
-        s.Append(loadingObject1.DORotate(new Vector3(0, 0, 180), 1f));
+        loadingObject1.DORotate(new Vector3(0, 0, -360), .8f, RotateMode.FastBeyond360)
+            .SetLoops(-1)
+            .SetEase(Ease.Linear);
     }
     
 }

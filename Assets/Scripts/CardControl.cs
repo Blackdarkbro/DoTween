@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -8,20 +9,17 @@ public class CardControl : MonoBehaviour
 {
     [SerializeField] private Transform[] cards;
     [SerializeField] private Transform[] points;
-    [SerializeField] private GameObject pp;
     void Start()
     {
         var sequence = DOTween.Sequence();
         for (var i = 0; i < cards.Length; i++)
         {
-           sequence.Append(cards[i].DOMove(points[i].position, .3f));
-           sequence.Append(cards[i].DOLocalRotate(new Vector3(0, 180, 0), .6f));
-        }
-    }
+            var sides = cards[i].GetComponentsInChildren<Transform>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            sequence.Append(cards[i].DOMove(points[i].position, .3f))
+                .Append(sides[2].DOLocalRotate(new Vector3(0, 180, 0), .8f).SetEase(Ease.Linear))
+                .Join(sides[1].DOLocalRotate(new Vector3(0, 180, 0), .8f).SetEase(Ease.Linear))
+                .Join(sides[2].DOScale(Vector3.zero, 0f).SetDelay(.4f));
+        }
     }
 }
